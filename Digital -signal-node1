@@ -1,0 +1,25 @@
+import requests
+import json
+
+class NeuralGateway:
+    def __init__(self, endpoint="http://localhost:8080/v1"):
+        self.endpoint = endpoint
+
+    def process_signal(self, user_input):
+        payload = {
+            "model": "model_stable.gguf",
+            "messages": [{"role": "user", "content": user_input}],
+            "temperature": 0.7
+        }
+        try:
+            response = requests.post(f"{self.endpoint}/chat/completions", json=payload)
+            return response.json()['choices'][0]['message']['content']
+        except Exception as e:
+            return f"Error in Neural Link: {e}"
+
+# منطق التشغيل القوي
+if __name__ == "__main__":
+    gateway = NeuralGateway()
+    print("🕯️ Neural Gateway Protocol - Version 1.0 Active")
+    query = "حلل شيفرة الإشارة الرقمية القادمة من المنارة العربية."
+    print(f"Result: {gateway.process_signal(query)}")
